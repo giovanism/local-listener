@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-listener
+  labels:
+    app: local-listener
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: local-listener
+  template:
+    metadata:
+      labels:
+        app: local-listener
+    spec:
+      containers:
+      - name: app
+        image: giovanism/local-listener
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-listener
+spec:
+  selector:
+    app: local-listener
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
